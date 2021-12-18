@@ -9,14 +9,8 @@ const bodyParser = require('body-parser')
 //routers
 const authRouter = require('./routes/auth')
 const stockRouter = require('./routes/shares')
-
 //
-
 const app = express();
-
-
-
-
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
