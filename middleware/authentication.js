@@ -18,7 +18,7 @@ const user_already_exists = async (req, res, next)=>{//for register
     if(!user_data.exists){
         next()
     }else{
-        res.status(400).send("user already exists, please sign in");
+        res.status(400).send({"status" : StatusCodes.UNAUTHORIZED , "message" : "user already exists, please sign in"});
     }
 
 }
@@ -29,7 +29,7 @@ const user_not_exists = async(req, res, next) => {//for login
     doc = firestore.collection("Users").doc(email);
     user_data = await doc.get()
     if(!user_data.exists){
-        res.status(400).send("the given user does not exist, please register");
+        res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED, "message":  "the given user does not exist, please register"});
     }else{
         next()
     }

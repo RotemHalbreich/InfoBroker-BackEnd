@@ -1,33 +1,26 @@
 class stock {
-    constructor(symbol, lastUpdate, currClose, previousClose ){
+    constructor(
+                symbol, 
+                lastUpdate,
+                currClose,
+                regularMarketDayHigh,
+                regularMarketDayLow,
+                regularMarketDayRange,
+                regularMarketVolume,
+                regularMarketOpen,
+                fiftyDayAverage,
+                marketState,
+                averageAnalystRating,
+                earningsTimestampEnd
+                ){
         this.symbol = symbol;
         this.lastUpdate = lastUpdate;
         this.currClose = currClose;
         this.previousClose = previousClose;
+        this.averageAnalystRating =averageAnalystRating
+        this.fiftyDayAverage = fiftyDayAverage
+        // this.currStart = currStart
     }
-    // timeStamp_to_date(unixTimestamp){
-    //     let date = new Date(unixTimestamp*1000);
-    //     let converted = "" + date.getDate()+
-    //     "/"+(date.getMonth()+1)+
-    //     "/"+date.getFullYear()+
-    //     " "+date.getHours()+
-    //     ":"+date.getMinutes()+
-    //     ":"+date.getSeconds()
-    //     return converted;
-    // }
-
-
-
-
 }
-// const timeStamp_to_date =   (unixTimestamp) => {
-//     let date = new Date(unixTimestamp*1000);
-//     let converted = "" + date.getDate()+
-//     "/"+(date.getMonth()+1)+
-//     "/"+date.getFullYear()+
-//     " "+date.getHours()+
-//     ":"+date.getMinutes()+
-//     ":"+date.getSeconds()
-//     return converted;
-// }
+
 module.exports =stock

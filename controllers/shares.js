@@ -68,8 +68,8 @@ const getCurrStockData = async (req, res)=>{
         let api_response = await axios.request(options)
         let unix_time = api_response.data[symbol].timestamp
         let last_update_date= getDate(unix_time[unix_time.length-1])
-         let curr_close =  api_response.data[symbol].close[unix_time.length-1]
-        let prev_close = api_response.data[symbol].chartPreviousClose        
+        let curr_close =  api_response.data[symbol].close[unix_time.length-1]
+        let prev_close = api_response.data[symbol].chartPreviousClose  
         let curr_stock = new stock(
         symbol,
         last_update_date,
@@ -87,38 +87,7 @@ const getCurrStockData = async (req, res)=>{
         
     }
     
-    // let curr_close =  api_response.data[symbol].close[1]
-    // let prev_close = api_response.data[symbol].chartPreviousClose        
-    // let curr_stock = new stock(
-    //     symbol,
-    //     last_update_date,
-    //     curr_close,
-    //     prev_close
-         
-    //   )
-
-    //   curr_stock = JSON.parse(JSON.stringify(curr_stock))
-    //   res.status(StatusCodes.OK).send(curr_stock);
-   
-
-    //  await axios.request(options).then(function (response) {
-       
-
-
-
-
-
-
-
-
-
-          
-    //   }).catch(function (error) {
-    //     res.status(StatusCodes.BAD_REQUEST).send({message: "symbol does not exist" })
-    //   });
-
-
-
+  
   
 
 
@@ -149,9 +118,59 @@ const getAllStocks = async (req, res)=>{
 
 
 
+const getTrendingStocks = async (req, res) =>
+{
+    symbol = req.query.symbol 
+
+    var options = {
+        method: 'GET',
+        url: 'https://yfapi.net/v1/finance/trending/US',
+        // params: {modules: 'defaultKeyStatistics,assetProfile'},
+        headers: {
+          'x-api-key': '63S7F9om0X8wMyvolfWinWEwSzaEcrW5iVrD4oBb'
+        }
+      };
+    try{
+        let api_response = await axios.request(options)
+
+        let result = api_response.data["finance"].result
+        res.send(result)
+        console.log(result);
+        // let stocks = result.quotes
+        // res.send(stocks)
+        // let results = api_response.data["finance"].result
+        // let stocks = results.quotes
+        // console.log(stocks);
+    //     let unix_time = api_response.data[symbol].timestamp
+    //     let last_update_date= getDate(unix_time[unix_time.length-1])
+    //     let curr_close =  api_response.data[symbol].close[unix_time.length-1]
+    //     let prev_close = api_response.data[symbol].chartPreviousClose  
+    //     let curr_stock = new stock(
+    //     symbol,
+    //     last_update_date,
+    //     curr_close,
+    //     prev_close
+    //   )
+
+    //   curr_stock = JSON.parse(JSON.stringify(curr_stock))
+    //   res.status(StatusCodes.OK).send(curr_stock);
+   
+
+    } catch(error) {
+        console.log("error occurd" , error);
+        res.status(StatusCodes.BAD_REQUEST).send({"status" : StatusCodes.BAD_REQUEST, "message": "symbol does not exist"});
+        
+    }
+
+
+
+}
+
+
 module.exports ={
     getAllNews,
     getAllStocks,
     getStockByInterval,
-    getCurrStockData
+    getCurrStockData,
+    getTrendingStocks
 }

@@ -30,7 +30,7 @@ const register = async (req,res) =>
     }
     catch (error) {
         console.log(error.message)
-        res.status(StatusCodes.NOT_ACCEPTABLE).send(error.message);
+        res.status(StatusCodes.BAD_REQUEST).send({"status" : StatusCodes.BAD_REQUEST, "message" : error.message});
     }
 }
 
@@ -45,8 +45,8 @@ const login = async(req, res) =>{
     stored_password = (await doc.get()).data().password
     const is_match = await bcrypt.compare(password, stored_password)
     if(is_match){
-        res.status(StatusCodes.OK).send("success")
-    }else{res.status(StatusCodes.UNAUTHORIZED).send("details are not correct")
+        res.status(StatusCodes.OK).send({"status" : StatusCodes.OK, "message" : "success"})
+    }else{res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED, "message" : "User UnHathorized"})
 }
    
 }
