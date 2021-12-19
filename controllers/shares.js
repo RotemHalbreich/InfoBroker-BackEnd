@@ -65,18 +65,7 @@ const getCurrStockData = async (req, res)=>{
         }
       };
     try{
-      // symbol, 
-      // lastUpdate,
-      // currClose,
-      // regularMarketDayHigh,
-      // regularMarketDayLow,
-      // regularMarketDayRange,
-      // regularMarketVolume,
-      // regularMarketOpen,
-      // fiftyDayAverage,
-      // marketState,
-      // averageAnalystRating,
-      // earningsTimestampEnd
+    
 
 
         let api_response = await axios.request(options)
@@ -110,7 +99,9 @@ const getCurrStockData = async (req, res)=>{
         
        
       curr_stock = JSON.parse(JSON.stringify(curr_stock))
-      res.status(StatusCodes.OK).send({"stocks" : curr_stock});
+      let ll = []
+      ll[0] = curr_stock
+      res.status(StatusCodes.OK).send({"stocks" : ll});
    
 
     } catch(error) {
