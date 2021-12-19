@@ -30,7 +30,7 @@ const register = async (req,res) =>
     }
     catch (error) {
         console.log(error.message)
-        res.status(StatusCodes.OK).send({"status" : StatusCodes.BAD_REQUEST, "message" : error.message});
+        res.status( StatusCodes.BAD_REQUEST).send({"status" : StatusCodes.BAD_REQUEST, "message" : error.message});
     }
 }
 

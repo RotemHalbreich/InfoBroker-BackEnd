@@ -20,7 +20,7 @@ const user_already_exists = async (req, res, next)=>{//for register
     if(!user_data.exists){
         next()
     }else{
-        res.status(400).send({"status" : StatusCodes.UNAUTHORIZED , "message" : "user already exists, please sign in"});
+        res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED , "message" : "user already exists, please sign in"});
     }
 
 }
