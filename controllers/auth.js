@@ -40,6 +40,7 @@ const register = async (req,res) =>
 
 
 const login = async(req, res) =>{
+    try{
     const {email, password} = req.body;
     const doc =  firestore.collection("Users").doc(email);
     stored_password = (await doc.get()).data().password
@@ -48,8 +49,10 @@ const login = async(req, res) =>{
 
     if(is_match){
         res.status(StatusCodes.OK).send({token})
-    }else{res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED, "message" : "User UnHathorized"})
-}
+    }else{res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED, "message" : "User UnHathorized"})}
+    } catch (error){
+        console.log("Error in login function", error);
+    }
    
 }
 
