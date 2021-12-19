@@ -4,7 +4,7 @@
 // const User = require('../models/user');
 // const firestore = firebase.firestore();
 const bcrypt = require('bcryptjs')
-
+const jwt = require('jsonwebtoken');
 const user = require('../models/user')
 const firebase = require('../db/connect')
 const firestore = firebase.firestore();
@@ -16,17 +16,17 @@ const register = async (req,res) =>
     try{
         const { first_name, last_name, email, password, admin } = req.body;
         const doc = firestore.collection("Users").doc(email);
-        
+        const token = jwt.sign({ userId: email }, 'MY_SECRET_KEY');
         let new_user = new user(
             first_name,
             last_name,
             email,
             password,
-            admin
+            admin,
         );
         new_user = JSON.parse(JSON.stringify(new_user));
         await doc.set(new_user);
-        res.status(StatusCodes.CREATED).send(new_user);
+        res.status(StatusCodes.CREATED).send({token});
     }
     catch (error) {
         console.log(error.message)
@@ -44,8 +44,10 @@ const login = async(req, res) =>{
     const doc =  firestore.collection("Users").doc(email);
     stored_password = (await doc.get()).data().password
     const is_match = await bcrypt.compare(password, stored_password)
+    const token = jwt.sign({ userId: email }, 'MY_SECRET_KEY');
+
     if(is_match){
-        res.status(StatusCodes.OK).send({"status" : StatusCodes.OK, "message" : "success"})
+        res.status(StatusCodes.OK).send({token})
     }else{res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED, "message" : "User UnHathorized"})
 }
    

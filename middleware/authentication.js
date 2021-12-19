@@ -3,7 +3,9 @@ const {BadRequestError} = require("../errors")
 const {StatusCodes} = require('http-status-codes')
 const firebase = require('../db/connect')
 const firestore = firebase.firestore();
+const jwt = require("jsonwebtoken");
 
+const config = process.env;
 const all_element_exists = (req, res, next) => {
     const { first_name, last_name, email, password, admin } = req.body;
     if(!first_name || !last_name || !email || !password || !admin){
@@ -43,10 +45,32 @@ const passwordHash = async (req, res, next) => {
     req.body.password = hashedPassword
     next()
 }
+
+
+
+const verifyToken = (req, res, next) => {
+  const token =
+    req.body.token || req.query.token || req.headers["x-access-token"];
+
+  if (!token) {
+    return res.status(403).send({"status" : 403 , "message" : "A token is required for authentication"});
+  }
+  try {
+    const decoded = jwt.verify(token, 'MY_SECRET_KEY');
+    req.user = decoded;
+  } catch (err) {
+    return res.status(401).send("Invalid Token");
+  }
+  return next();
+};
+
+
+
 module.exports = {
     passwordHash,
     all_element_exists,
     user_already_exists,
-    user_not_exists
+    user_not_exists,
+    verifyToken
 
 }

@@ -116,7 +116,8 @@ const getAllStocks = async (req, res)=>{
 }
 
 
-
+//add stock history method https://yfapi.net/v8/finance/spark?interval=1d&range=1mo&symbols=AAPL
+//
 
 const getTrendingStocks = async (req, res) =>
 {
