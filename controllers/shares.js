@@ -58,27 +58,59 @@ const getCurrStockData = async (req, res)=>{
 
     var options = {
         method: 'GET',
-        url: 'https://yfapi.net/v8/finance/spark?interval=1d&range=1d&symbols=' + symbol,
+        url: 'https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=' + symbol,
         // params: {modules: 'defaultKeyStatistics,assetProfile'},
         headers: {
           'x-api-key': '63S7F9om0X8wMyvolfWinWEwSzaEcrW5iVrD4oBb'
         }
       };
     try{
-        let api_response = await axios.request(options)
-        let unix_time = api_response.data[symbol].timestamp
-        let last_update_date= getDate(unix_time[unix_time.length-1])
-        let curr_close =  api_response.data[symbol].close[unix_time.length-1]
-        let prev_close = api_response.data[symbol].chartPreviousClose  
-        let curr_stock = new stock(
-        symbol,
-        last_update_date,
-        curr_close,
-        prev_close
-      )
+      // symbol, 
+      // lastUpdate,
+      // currClose,
+      // regularMarketDayHigh,
+      // regularMarketDayLow,
+      // regularMarketDayRange,
+      // regularMarketVolume,
+      // regularMarketOpen,
+      // fiftyDayAverage,
+      // marketState,
+      // averageAnalystRating,
+      // earningsTimestampEnd
 
+
+        let api_response = await axios.request(options)
+        let result = api_response.data["quoteResponse"]["result"][0]
+        //TODO  add time + earningsTimestampEnd  
+      let {
+      symbol, 
+      longName,
+      currClose,
+      regularMarketDayHigh,
+      regularMarketDayLow,
+      regularMarketDayRange,
+      regularMarketVolume,
+      regularMarketOpen,
+      fiftyDayAverage,
+      marketState,
+      averageAnalystRating,regularMarketPreviousClose,fiftyTwoWeekRange} = result
+      let curr_stock = new stock( symbol, 
+        longName,
+        currClose,
+        regularMarketDayHigh,
+        regularMarketDayLow,
+        regularMarketDayRange,
+        regularMarketVolume,
+        regularMarketOpen,
+        fiftyDayAverage,
+        marketState,
+        averageAnalystRating,
+        regularMarketPreviousClose,fiftyTwoWeekRange
+        )  
+        
+       
       curr_stock = JSON.parse(JSON.stringify(curr_stock))
-      res.status(StatusCodes.OK).send(curr_stock);
+      res.status(StatusCodes.OK).send({"stocks" : curr_stock});
    
 
     } catch(error) {

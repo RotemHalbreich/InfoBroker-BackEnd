@@ -9,9 +9,9 @@ router.get('/getAllNews', verifyToken,getAllNews)
 
 router.get('/getAllStocks',verifyToken, getAllStocks)
 router.get('/getStockByInterval',verifyToken, getStockByInterval)
-router.get('/getCurrStockData', verifyToken,getCurrStockData)
+router.get('/getCurrStockData',getCurrStockData)
 router.get('/getTrendingStocks', verifyToken,getTrendingStocks)
-
+//
 
 
 module.exports = router

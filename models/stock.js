@@ -1,7 +1,7 @@
 class stock {
     constructor(
                 symbol, 
-                lastUpdate,
+                longName,
                 currClose,
                 regularMarketDayHigh,
                 regularMarketDayLow,
@@ -11,15 +11,22 @@ class stock {
                 fiftyDayAverage,
                 marketState,
                 averageAnalystRating,
-                earningsTimestampEnd
+                regularMarketPreviousClose,
+                fiftyTwoWeekRange
                 ){
-        this.symbol = symbol;
-        this.lastUpdate = lastUpdate;
-        this.currClose = currClose;
-        this.previousClose = previousClose;
-        this.averageAnalystRating =averageAnalystRating
-        this.fiftyDayAverage = fiftyDayAverage
-        // this.currStart = currStart
+                    this.symbol = symbol; 
+                    this.longName = longName;
+                    this.currClose = currClose;
+                    this.regularMarketDayHigh =regularMarketDayHigh; 
+                    this.regularMarketDayLow =regularMarketDayLow; 
+                    this.regularMarketDayRange = regularMarketDayRange;
+                    this.regularMarketVolume =regularMarketVolume; 
+                    this.regularMarketOpen =regularMarketOpen;
+                    this.fiftyDayAverage = fiftyDayAverage;
+                    this.marketState =marketState;
+                    this.averageAnalystRating =averageAnalystRating;
+                    this.regularMarketPreviousClose =regularMarketPreviousClose;
+                    this.fiftyTwoWeekRange = fiftyTwoWeekRange;
     }
 }
 
