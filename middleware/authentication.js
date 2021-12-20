@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs')
-const {BadRequestError} = require("../errors")
 const {StatusCodes} = require('http-status-codes')
 const firebase = require('../db/connect')
 const firestore = firebase.firestore();

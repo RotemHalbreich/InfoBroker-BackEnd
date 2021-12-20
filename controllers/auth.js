@@ -9,7 +9,6 @@ const user = require('../models/user')
 const firebase = require('../db/connect')
 const firestore = firebase.firestore();
 const {StatusCodes} = require('http-status-codes')
-const {BadRequestError} = require("../errors")
 
 const register = async (req,res) =>
 {
