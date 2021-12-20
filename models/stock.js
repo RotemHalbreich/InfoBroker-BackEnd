@@ -4,6 +4,7 @@ class stock {
                 longName,
                 regularMarketPrice,
                 preMarketPrice,
+                preMarketChangePercent,
                 regularMarketDayHigh,
                 regularMarketDayLow,
                 regularMarketDayRange,
@@ -19,6 +20,7 @@ class stock {
                     this.longName = longName;
                     this.regularMarketPrice = regularMarketPrice;
                     this.preMarketPrice = preMarketPrice;
+                    this.preMarketChangePercent = preMarketChangePercent;
                     this.regularMarketDayHigh =regularMarketDayHigh; 
                     this.regularMarketDayLow =regularMarketDayLow; 
                     this.regularMarketDayRange = regularMarketDayRange;
