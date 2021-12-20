@@ -2,7 +2,7 @@ class stock {
     constructor(
                 symbol, 
                 longName,
-                currClose,
+                regularMarketPrice,
                 regularMarketDayHigh,
                 regularMarketDayLow,
                 regularMarketDayRange,
@@ -16,7 +16,7 @@ class stock {
                 ){
                     this.symbol = symbol; 
                     this.longName = longName;
-                    this.currClose = currClose;
+                    this.regularMarketPrice = regularMarketPrice;
                     this.regularMarketDayHigh =regularMarketDayHigh; 
                     this.regularMarketDayLow =regularMarketDayLow; 
                     this.regularMarketDayRange = regularMarketDayRange;
