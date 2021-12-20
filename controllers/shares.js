@@ -75,6 +75,7 @@ const getCurrStockData = async (req, res)=>{
       symbol, 
       longName,
       regularMarketPrice,
+      preMarketPrice,
       regularMarketDayHigh,
       regularMarketDayLow,
       regularMarketDayRange,
@@ -84,11 +85,12 @@ const getCurrStockData = async (req, res)=>{
       marketState,
       averageAnalystRating,regularMarketPreviousClose,fiftyTwoWeekRange
     } = result
-    
+
       let curr_stock = new stock( 
         symbol, 
       longName,
       regularMarketPrice,
+      preMarketPrice,
       regularMarketDayHigh,
       regularMarketDayLow,
       regularMarketDayRange,

@@ -3,6 +3,7 @@ class stock {
                 symbol, 
                 longName,
                 regularMarketPrice,
+                preMarketPrice,
                 regularMarketDayHigh,
                 regularMarketDayLow,
                 regularMarketDayRange,
@@ -17,6 +18,7 @@ class stock {
                     this.symbol = symbol; 
                     this.longName = longName;
                     this.regularMarketPrice = regularMarketPrice;
+                    this.preMarketPrice = preMarketPrice;
                     this.regularMarketDayHigh =regularMarketDayHigh; 
                     this.regularMarketDayLow =regularMarketDayLow; 
                     this.regularMarketDayRange = regularMarketDayRange;
