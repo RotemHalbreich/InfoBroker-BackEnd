@@ -47,7 +47,9 @@ const login = async(req, res) =>{
     try{
     const {email, password} = req.body;
     const doc =  firestore.collection("Users").doc(email);
-    stored_password = (await doc.get()).data().password
+    data = (await doc.get()).data()
+    stored_password = data.password
+    first_name = data.first_name
     const is_match = await bcrypt.compare(password, stored_password)
     const token = jwt.sign({ userId: email }, 'MY_SECRET_KEY');
     
@@ -56,9 +58,10 @@ const login = async(req, res) =>{
         const doc_token = firestore.collection("Tokens").doc(token);
         await doc_token.set({name : first_name})
         res.status(StatusCodes.OK).send({token})
-    }else{res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED, "message" : "User UNAUTHORIZED"})}
+    }else{res.status(StatusCodes.UNAUTHORIZED).send({status : StatusCodes.UNAUTHORIZED, message : "User UNAUTHORIZED"})}
     } catch (error){
         console.log("Error in login function", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status: StatusCodes.INTERNAL_SERVER_ERROR , message: "server error"})
     }
    
 }
