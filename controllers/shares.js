@@ -224,6 +224,11 @@ const removeRecStock = async (req, res) =>{
   
 }
 
+const getAllRecommended = async (req, res) =>{
+  const docs = await firestore.collection("recommended").listDocuments();
+  const ids = docs.map(it => it.id)
+  res.status(200).send({recommended: ids})
+}
 module.exports ={
     getAllNews,
     getAllStocks,
@@ -231,5 +236,6 @@ module.exports ={
     getCurrStockData,
     getTrendingStocks,
     appendRecStock,
-    removeRecStock
+    removeRecStock,
+    getAllRecommended
 }
