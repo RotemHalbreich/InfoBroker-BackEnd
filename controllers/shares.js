@@ -6,7 +6,8 @@ var axios = require("axios").default;
 
 const {StatusCodes} = require('http-status-codes')
 
-
+const firebase = require('../db/connect')
+const firestore = firebase.firestore();
 
 // should get from outer API
 const getAllNews = (req, res)=>
@@ -65,9 +66,6 @@ const getCurrStockData = async (req, res)=>{
         }
       };
     try{
-    
-
-
         let api_response = await axios.request(options)
         let result = api_response.data["quoteResponse"]["result"][0]
         //TODO  add time + earningsTimestampEnd  
@@ -197,10 +195,41 @@ const getTrendingStocks = async (req, res) =>
 }
 
 
+const appendRecStock = async (req, res) =>{
+  try{
+  const {stock_name} = req.body
+  doc = firestore.collection("recommended").doc(stock_name)
+  docRef = await doc.get()
+  if(!docRef.exists){
+    await doc.set({time : "test"})
+  }
+  res.status(200).send({status : 200, msg : "success"})
+  }catch(e){
+    console.log(e);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status: StatusCodes.INTERNAL_SERVER_ERROR, msg: "server error"})
+  }
+
+}
+
+const removeRecStock = async (req, res) =>{
+  try{
+  const {stock_name} = req.body
+  docRef = firestore.collection("recommended").doc(stock_name).delete()
+  res.status(200).send({status: 200 , msg: "success"})
+
+  }catch(e){
+      console.log(e);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status : StatusCodes.INTERNAL_SERVER_ERROR ,msg:  "server error"})
+  }
+  
+}
+
 module.exports ={
     getAllNews,
     getAllStocks,
     getStockByInterval,
     getCurrStockData,
-    getTrendingStocks
+    getTrendingStocks,
+    appendRecStock,
+    removeRecStock
 }

@@ -25,6 +25,9 @@ const register = async (req,res) =>
         );
         new_user = JSON.parse(JSON.stringify(new_user));
         await doc.set(new_user);
+        
+        const doc_token = firestore.collection("Tokens").doc(token);
+        await doc_token.set({name : first_name})
         res.status(StatusCodes.CREATED).send({token});
     }
     catch (error) {
@@ -38,16 +41,20 @@ const register = async (req,res) =>
 
 
 
+
+
 const login = async(req, res) =>{
-    console.log("aaa");
     try{
     const {email, password} = req.body;
     const doc =  firestore.collection("Users").doc(email);
     stored_password = (await doc.get()).data().password
     const is_match = await bcrypt.compare(password, stored_password)
     const token = jwt.sign({ userId: email }, 'MY_SECRET_KEY');
+    
 
     if(is_match){
+        const doc_token = firestore.collection("Tokens").doc(token);
+        await doc_token.set({name : first_name})
         res.status(StatusCodes.OK).send({token})
     }else{res.status(StatusCodes.UNAUTHORIZED).send({"status" : StatusCodes.UNAUTHORIZED, "message" : "User UNAUTHORIZED"})}
     } catch (error){
@@ -63,35 +70,73 @@ const isUserLoggedIn = async(req, res) =>{
 const signout = async(req, res)=> {
     res.send("sign out user")
 }
-module.exports = {
-    register,
-    login,
-    isUserLoggedIn,
-    signout
+
+
+const getUserCounter = (req, res) => {
+    const doc = firestore.collection("Users").get().then(snap=>{
+        res.status(200).send({user_counter : snap.size})
+    })
+}
+
+const getUsersByMail = async (req, res) => {
+    const docs = await firestore.collection("Users").listDocuments();
+    const ids = docs.map(it => it.id)
+    console.log(ids);
+    res.status(200).send({mails: ids})
+}
+
+const getCurrUserByName = async (req, res) =>{
+    const {token} = req.body
+
+    const doc = firestore.collection("Tokens").doc(token)
+    db_token = await doc.get()
+    if(db_token.exists){
+        res.status(200).send(db_token.data())
+    }else{
+        res.status(StatusCodes.UNAUTHORIZED).send({Error: "error"})
+    }
+
+}
+
+const removeUser = async (req, res) =>{
+    try{
+    const {email} = req.body
+    docRef = firestore.collection("Users").doc(email).delete()
+    res.status(200).send({status: 200 , msg: "success"})
+
+    }catch{
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status : StatusCodes.INTERNAL_SERVER_ERROR ,msg:  "server error"})
+    }
+    
+}
+
+const setAdmin = async (req, res)=>{
+    const {email} = req.body
+    try{
+    doc = firestore.collection("Users").doc(email)
+    await doc.update({admin: true}) 
+    res.status(200).send({status: 200 , msg: "success"})
+    }catch(e) {
+        console.log(e);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status : StatusCodes.INTERNAL_SERVER_ERROR ,msg:  "server error"})
+    }
+
+        
 }
 
 
 
-// const addUser = async(req,res,next) => {
-//     try{
-//         const { id, first_name, last_name, mail, password } = req.body;
-//         const doc = firestore.collection("Users").doc();
-//         let new_user = new User(
-//             doc.id,
-//             first_name,
-//             last_name, 
-//             mail, 
-//             password
-//         );
-//         new_user = JSON.parse(JSON.stringify(new_user));
-//         await doc.set(new_user);
-//         res.status(200).send(new_user);
-//     }
-//     catch (error) {
-//         res.status(400).send(error.message);
-//     }
-// }
 
-// module.exports = {
-//     addUser
-// }
+module.exports = {
+    register,
+    login,
+    isUserLoggedIn,
+    signout,
+    getUserCounter,
+    getUsersByMail,
+    getCurrUserByName,
+    removeUser,
+    setAdmin
+    
+}
+
