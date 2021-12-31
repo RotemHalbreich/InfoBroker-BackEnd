@@ -227,7 +227,14 @@ const removeRecStock = async (req, res) =>{
 const getAllRecommended = async (req, res) =>{
   const docs = await firestore.collection("recommended").listDocuments();
   const ids = docs.map(it => it.id)
-  res.status(200).send({recommended: ids})
+  console.log(ids);
+  ans = []
+  for (let i=0; i<ids.length;i++ ){
+    ans[i] =  (await firestore.collection("Stocks").doc(ids[i]).get()).data()
+  }
+
+
+  res.status(200).send({recommended: ans})
 }
 module.exports ={
     getAllNews,

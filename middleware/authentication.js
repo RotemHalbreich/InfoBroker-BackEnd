@@ -64,7 +64,6 @@ const verifyToken = (req, res, next) => {
 };
 
 
-
 module.exports = {
     passwordHash,
     all_element_exists,
