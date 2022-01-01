@@ -230,10 +230,9 @@ const getAllRecommended = async (req, res) =>{
   console.log(ids);
   ans = []
   for (let i=0; i<ids.length;i++ ){
-    ans[i] =  (await firestore.collection("Stocks").doc(ids[i]).get()).data()
+    ans[i] =  (await firestore.collection("Stocks").doc(ids[i]).get()).data();
+    ans[i].id = i+1;
   }
-
-
   res.status(200).send({recommended: ans})
 }
 module.exports ={

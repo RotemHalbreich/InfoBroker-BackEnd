@@ -27,7 +27,7 @@ const register = async (req,res) =>
         await doc.set(new_user);
         
         const doc_token = firestore.collection("Tokens").doc(token);
-        await doc_token.set({name : first_name})
+        await doc_token.set({name : first_name, admin: admin})
         res.status(StatusCodes.CREATED).send({token});
     }
     catch (error) {
@@ -50,13 +50,14 @@ const login = async(req, res) =>{
     data = (await doc.get()).data()
     stored_password = data.password
     first_name = data.first_name
+    _admin = data.admin
     const is_match = await bcrypt.compare(password, stored_password)
     const token = jwt.sign({ userId: email }, 'MY_SECRET_KEY');
     
 
     if(is_match){
         const doc_token = firestore.collection("Tokens").doc(token);
-        await doc_token.set({name : first_name})
+        await doc_token.set({name : first_name, admin :  _admin})
         res.status(StatusCodes.OK).send({token})
     }else{res.status(StatusCodes.UNAUTHORIZED).send({status : StatusCodes.UNAUTHORIZED, message : "User UNAUTHORIZED"})}
     } catch (error){
@@ -130,6 +131,7 @@ const setAdmin = async (req, res)=>{
 
 
 
+
 module.exports = {
     register,
     login,
@@ -139,7 +141,6 @@ module.exports = {
     getUsersByMail,
     getCurrUserByName,
     removeUser,
-    setAdmin
-    
+    setAdmin    
 }
 
