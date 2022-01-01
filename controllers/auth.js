@@ -77,9 +77,10 @@ const signout = async(req, res)=> {
 
 
 const getUserCounter = (req, res) => {
+    try{
     const doc = firestore.collection("Users").get().then(snap=>{
         res.status(200).send({user_counter : snap.size})
-    })
+    })}catch(e){console.log(e); res.status(500).send({isError : true , msg : e})}
 }
 
 const getUsersByMail = async (req, res) => {
@@ -90,6 +91,7 @@ const getUsersByMail = async (req, res) => {
 }
 
 const getCurrUserByName = async (req, res) =>{
+    try{
     const {token} = req.body
 
     const doc = firestore.collection("Tokens").doc(token)
@@ -98,6 +100,10 @@ const getCurrUserByName = async (req, res) =>{
         res.status(200).send(db_token.data())
     }else{
         res.status(StatusCodes.UNAUTHORIZED).send({Error: "error"})
+    }}catch(e){
+        res.status(StatusCodes.UNAUTHORIZED).send({Error: "error"})
+        console.log("getCurrUserByName:\n", e);
+
     }
 
 }
