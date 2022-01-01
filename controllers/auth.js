@@ -111,7 +111,6 @@ const removeUser = async (req, res) =>{
     }catch{
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status : StatusCodes.INTERNAL_SERVER_ERROR ,msg:  "server error"})
     }
-    
 }
 
 const setAdmin = async (req, res)=>{
@@ -123,9 +122,19 @@ const setAdmin = async (req, res)=>{
     }catch(e) {
         console.log(e);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status : StatusCodes.INTERNAL_SERVER_ERROR ,msg:  "server error"})
-    }
+    }  
+}
 
-        
+const isAdmin = async (req, res)=>{
+    const {token} = req.body
+    try{
+    doc = firestore.collection("Tokens").doc(token)
+    ref = await doc.get()
+    res.status(200).send({admin : ref.data().admin})
+    }catch(e) {
+        console.log(e);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status : StatusCodes.INTERNAL_SERVER_ERROR ,msg:  "server error"})
+    }  
 }
 
 
@@ -141,6 +150,7 @@ module.exports = {
     getUsersByMail,
     getCurrUserByName,
     removeUser,
-    setAdmin    
+    setAdmin,
+    isAdmin
 }
 

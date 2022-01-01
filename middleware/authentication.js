@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken");
 
 const config = process.env;
 const all_element_exists = (req, res, next) => {
-    const { first_name, last_name, email, password, admin } = req.body;
-    if(!first_name || !last_name || !email || !password || !admin){
+    const { first_name, last_name, email, password } = req.body;
+    if(!first_name || !last_name || !email || !password){
         res.status(StatusCodes.BAD_REQUEST).send("please provide all the details")
     }else next()
 }

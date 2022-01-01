@@ -235,6 +235,22 @@ const getAllRecommended = async (req, res) =>{
   }
   res.status(200).send({recommended: ans})
 }
+
+const setAdmin = async (req, res)=>{
+  const {email} = req.body
+  try{
+  doc = firestore.collection("Users").doc(email)
+  await doc.update({admin: true}) 
+  res.status(200).send({status: 200 , msg: "success"})
+  }catch(e) {
+      console.log(e);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({status : StatusCodes.INTERNAL_SERVER_ERROR ,msg:  "server error"})
+  }
+}
+
+
+
+
 module.exports ={
     getAllNews,
     getAllStocks,
@@ -243,5 +259,6 @@ module.exports ={
     getTrendingStocks,
     appendRecStock,
     removeRecStock,
-    getAllRecommended
+    getAllRecommended,
+    setAdmin
 }
