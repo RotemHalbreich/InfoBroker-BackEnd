@@ -24,7 +24,7 @@ const getStockByInterval = async (req, res)=>{
         url: 'https://yfapi.net/v8/finance/spark?interval=1d&range=1d&symbols=AAPL',
         // params: {modules: 'defaultKeyStatistics,assetProfile'},
         headers: {
-          'x-api-key': '63S7F9om0X8wMyvolfWinWEwSzaEcrW5iVrD4oBb'
+          'x-api-key': // add private key here 
         }
       };
       
